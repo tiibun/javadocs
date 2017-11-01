@@ -2,4 +2,5 @@
 default:
 
 openjdk:
-	docker run -v $PWD:/usr/src -w /usr/src openjdk:8 bash openjdk.sh
+	docker build -t javadoc-openjdk src/openjdk
+	docker run -v ${PWD}:/usr/src -w /usr/src javadoc-openjdk
