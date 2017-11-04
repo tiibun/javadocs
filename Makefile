@@ -1,6 +1,11 @@
+SUBDIRS := $(wildcard src/*/*)
 
-default:
+all: $(SUBDIRS)
+$(SUBDIRS):
+	$(MAKE) -C $@
 
-openjdk:
-	docker build -t javadoc-openjdk src/openjdk
-	docker run -v ${PWD}:/usr/src -w /usr/src javadoc-openjdk
+.PHONY: all $(SUBDIRS)
+
+.PHONY: list
+list:
+	@$(MAKE) -pRrq -f $(lastword $(MAKEFILE_LIST)) : 2>/dev/null | awk -v RS= -F: '/^# File/,/^# Finished Make data base/ {if ($$1 !~ "^[#.]") {print $$1}}' | sort | egrep -v -e '^[^[:alnum:]]' -e '^$@$$' | xargs
